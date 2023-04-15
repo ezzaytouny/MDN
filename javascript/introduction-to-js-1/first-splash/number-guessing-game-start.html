@@ -22,7 +22,7 @@
       }
 
       .lastResult {
-        color: white;
+        color: rgb(115, 34, 34);
         padding: 3px;
       }
     </style>
@@ -40,15 +40,62 @@
     </div>
 
     <div class="resultParas">
-      <p class="guesses"></p>
+      <p class="guesses">Previous guesses : </p>
       <p class="lastResult"></p>
       <p class="lowOrHi"></p>
     </div>
-
+    
     <script>
 
-      // Your JavaScript goes here
-
+      let number=Math.floor(Math.random()*100)+1;
+      let tries=10;
+      const guesses=document.querySelector(".guesses");
+      const lastResult=document.querySelector(".lastResult");
+      const lowOrHi=document.querySelector(".lowOrHi");
+      guessSubmit=document.querySelector(".guessSubmit");
+      guessSubmit.addEventListener("click",verify);
+      const replay=document.createElement("button");
+      replay.textContent="Play again";
+      replay.addEventListener("click",restart);
+      function verify(){
+        guesses.textContent+=guessField.value +"  ";
+        if (Number(guessField.value)===number){
+          lastResult.textContent="Congratulations! You got it right!";
+          end();
+        }
+        else {
+          if (--tries==0){
+            lastResult.textContent="Game over";
+            end();
+          }
+          else {
+            if (Number(guessField.value)>number){
+              lowOrHi.textContent="go lower";
+            }
+            else{
+              lowOrHi.textContent="go higher";
+            }
+            lastResult.textContent="guesses left:"+tries;
+            guessField.focus();
+          }
+        }
+        guessField.value="";
+      }
+      function end(){
+        guessField.disabled=true;
+        guessSubmit.disabled=true;
+        document.body.append(replay);
+        lowOrHi.textContent="";
+      }
+      function restart(){
+        guessField.disabled=false;
+        guessSubmit.disabled=false;
+        document.querySelector("button").remove();
+        guesses.textContent="Previous guesses :" ;
+        tries=10;
+        lastResult.textContent="";
+        number=Math.floor(Math.random()*100)+1;
+      }
     </script>
   </body>
 </html>
